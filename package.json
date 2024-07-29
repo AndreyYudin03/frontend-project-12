@@ -2,7 +2,10 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "online chat",
-  "main": "index.js",
+  "main": "app.js",
+  "workspaces": [
+    "frontend"
+  ],
   "scripts": {
     "build": "npm run build --prefix frontend",
     "start": "start-server -s ./frontend/build",
