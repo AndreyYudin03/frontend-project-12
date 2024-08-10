@@ -1,16 +1,26 @@
-// проверяет наличие токена и производит перенаправление
-import React from "react";
 import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { loadTokenFromStorage } from "../store/slices/authSlice.js";
 
-const ProtectedRoute = ({ element: Component }) => {
-  const token = useSelector((state) => state.auth.token);
+const ProtectedRoute = ({ element: Page }) => {
+  const dispatch = useDispatch();
+  const { token, isLoading } = useSelector((state) => state.auth);
 
-  if (!token) {
-    return <Navigate to="/login" />;
+  useEffect(() => {
+    if (!token) {
+      dispatch(loadTokenFromStorage());
+    }
+  }, [dispatch, token]);
+
+  console.log("isLoading:", isLoading);
+  console.log("token:", token);
+
+  if (isLoading) {
+    return <div>Loading... ProtectedRoute</div>;
   }
 
-  return <Component />;
+  return token ? <Page /> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;
