@@ -1,13 +1,24 @@
-import React from "react";
-import LoginForm from "../components/LoginForm";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import LoginForm from '../components/Forms/LoginForm';
 
 const LoginPage = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="container mt-5">
-      <h1 className="text-center mb-4">Login</h1>
+      <h1 className="text-center mb-4">{t('loginPage.title')}</h1>
       <div className="row justify-content-center">
         <div className="col-md-6">
           <LoginForm />
+          <div className="text-center mt-3">
+            <p>
+              {t('loginPage.noAccount')}
+              {' '}
+              <Link to="/signup">{t('loginPage.signUp')}</Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

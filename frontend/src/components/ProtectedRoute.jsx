@@ -1,26 +1,27 @@
-import { Navigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { loadTokenFromStorage } from "../store/slices/authSlice.js";
+import { Navigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { loadCredentialsFromStorage } from '../store/slices/authSlice.js';
 
 const ProtectedRoute = ({ element: Page }) => {
   const dispatch = useDispatch();
-  const { token, isLoading } = useSelector((state) => state.auth);
+  const { token, username, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (!token) {
-      dispatch(loadTokenFromStorage());
+    if (!token || !username) {
+      dispatch(loadCredentialsFromStorage());
     }
-  }, [dispatch, token]);
-
-  console.log("isLoading:", isLoading);
-  console.log("token:", token);
+  }, [dispatch, token, username]);
 
   if (isLoading) {
-    return <div>Loading... ProtectedRoute</div>;
+    return (
+      <div className="spinner-border" role="status">
+        <span className="sr-only" />
+      </div>
+    );
   }
 
-  return token ? <Page /> : <Navigate to="/login" />;
+  return token && username ? <Page /> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;

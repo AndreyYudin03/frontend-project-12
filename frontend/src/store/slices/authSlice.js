@@ -1,35 +1,60 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-// import { closeSocketConnection } from "../../socket";
+/* eslint-disable functional/no-try-statement */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-use-before-define */
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import rollbar from '../../rollbar.js';
+
+const handleAuthSuccess = (token, username, dispatch) => {
+  localStorage.setItem('token', token);
+  localStorage.setItem('username', username);
+  dispatch(setCredentials({ token, username }));
+};
 
 export const login = createAsyncThunk(
-  "auth/login",
-  async (credentials, { rejectWithValue }) => {
+  'auth/login',
+  async (credentials, { dispatch, rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/v1/login", credentials);
+      const response = await axios.post('/api/v1/login', credentials);
       const { token, username } = response.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("username", username);
+      handleAuthSuccess(token, username, dispatch);
       return token;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data.statusCode);
     }
-  }
+  },
 );
 
-export const loadTokenFromStorage = createAsyncThunk(
-  "auth/loadTokenFromStorage",
-  async (_, { rejectWithValue, dispatch }) => {
-    const token = localStorage.getItem("token");
-    const username = localStorage.getItem("username");
-    if (!token) {
-      dispatch(setCredentials({ token: null, username: null }));
-      return rejectWithValue("No token found");
-    } else {
-      dispatch(setCredentials({ token, username }));
+export const signup = createAsyncThunk(
+  'auth/signup',
+  async (credentials, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await axios.post('/api/v1/signup', credentials);
+      const { token, username } = response.data;
+      handleAuthSuccess(token, username, dispatch);
+      return token;
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        return rejectWithValue('Username already exists');
+      }
+      rollbar.error('User registration failed', error);
+      return rejectWithValue(error.response?.data || 'Registration failed');
     }
+  },
+);
+
+export const loadCredentialsFromStorage = createAsyncThunk(
+  'auth/loadCredentialsFromStorage',
+  async (_, { dispatch, rejectWithValue }) => {
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
+    if (!token || !username) {
+      return rejectWithValue('noCredentialsStorage');
+    }
+    handleAuthSuccess(token, username, dispatch);
+
     return token;
-  }
+  },
 );
 
 const initialState = {
@@ -40,12 +65,12 @@ const initialState = {
 };
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("username");
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
       state.token = null;
       state.username = null;
     },
@@ -54,35 +79,37 @@ const authSlice = createSlice({
       state.token = token;
       state.username = username;
     },
-    isAuthenticated: (state) => {
-      const { token } = state;
-      return !!token;
-    },
   },
   extraReducers: (builder) => {
+    const handlePending = (state) => {
+      state.isLoading = true;
+      state.error = null;
+    };
+
+    const handleFulfilled = (state) => {
+      state.isLoading = false;
+      state.error = null;
+    };
+
+    const handleRejected = (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    };
+
     builder
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.token = action.payload;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
-      .addCase(loadTokenFromStorage.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = false;
-      })
-      .addCase(loadTokenFromStorage.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      });
+      .addCase(login.pending, handlePending)
+      .addCase(signup.pending, handlePending)
+      .addCase(loadCredentialsFromStorage.pending, handlePending)
+
+      .addCase(login.fulfilled, handleFulfilled)
+      .addCase(signup.fulfilled, handleFulfilled)
+      .addCase(loadCredentialsFromStorage.fulfilled, handleFulfilled)
+
+      .addCase(login.rejected, handleRejected)
+      .addCase(signup.rejected, handleRejected)
+      .addCase(loadCredentialsFromStorage.rejected, handleRejected);
   },
 });
 
-export const { logout, setCredentials, isAuthenticated } = authSlice.actions;
+export const { logout, setCredentials } = authSlice.actions;
 export default authSlice.reducer;

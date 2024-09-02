@@ -14,7 +14,6 @@
   "author": "Andrey Yudin",
   "license": "ISC",
   "dependencies": {
-    "@hexlet/chat-server": "^2.0.3",
-    "bootstrap": "^5.3.3"
+    "@hexlet/chat-server": "^2.0.3"
   }
 }
