@@ -130,6 +130,7 @@ const ChannelList = ({ channels }) => {
           onClick={() => handleModalSwitch('add')}
           style={{ background: 'none', border: 'none' }}
           type="button"
+          aria-label="Add channel"
         >
           <i className="bi bi-plus-square fs-4" />
         </button>
