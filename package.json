@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "npm run build --prefix frontend",
-    "start": "start-server -s ./frontend/build",
+    "start": "PORT=5000 start-server -s ./frontend/build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andrey Yudin",
