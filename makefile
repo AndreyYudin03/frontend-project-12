@@ -15,7 +15,6 @@ deploy:
 
 start:
 	make build
-	make start-backend
 	npx start-server -s ./frontend/build
 
 develop:
