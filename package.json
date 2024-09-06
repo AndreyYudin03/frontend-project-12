@@ -9,8 +9,7 @@
   "scripts": {
     "build": "npm run build --prefix frontend",
     "start": "PORT=5000 start-server -s ./frontend/build",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "if [ ! -f frontend/package-lock.json ]; then cd frontend && npm ci; fi"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andrey Yudin",
   "license": "ISC",

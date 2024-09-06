@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { ToastContainer } from 'react-toastify';
 import LoginPage from './pages/LoginPage.jsx';
@@ -20,12 +20,14 @@ const App = () => (
     <div className="d-flex flex-column vh-100">
       <Header />
       <main className="flex-grow-1 hv-100">
-        <Routes>
-          <Route path="/" element={<ProtectedRoute element={ChatPage} />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<ProtectedRoute element={ChatPage} />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
       </main>
     </div>
   </>
