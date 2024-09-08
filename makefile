@@ -17,11 +17,13 @@ deploy:
 	git push heroku main
 
 start:
-	PORT=5000 npx start-server -s ./frontend/build
+	npx start-server -s ./frontend/build
+	npm start --prefix frontend
 
 develop:
 	make start-backend & make start-frontend
 
 build:
 	rm -rf frontend/build
+	make install & make -C frontend install
 	npm run build
