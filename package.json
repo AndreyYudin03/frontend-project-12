@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build --prefix frontend",
     "start": "start-server -s ./frontend/build",
-    "postinstall": "cd frontend && npm install"
+    "postinstall": "cd frontend && npm ci"
   },
   "author": "Andrey Yudin",
   "license": "ISC",
