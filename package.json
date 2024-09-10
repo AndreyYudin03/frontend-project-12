@@ -2,14 +2,14 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "online chat",
-  "main": "src/index.js",
   "workspaces": [
     "frontend"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build --prefix frontend",
-    "start": "start-server -s ./frontend/build"
+    "start": "npx start-server -s ./frontend/build",
+    "postinstall": "cd frontend && npm ci"
   },
   "author": "Andrey Yudin",
   "license": "ISC",
