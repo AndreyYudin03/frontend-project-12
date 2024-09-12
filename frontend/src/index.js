@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 // rollbar
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
-import rollbar from './rollbar.js';
+import rollbarConfig from './rollbar.js';
 
 // store
 import store from './store/index.js';
@@ -20,7 +20,7 @@ import App from './App.js';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RollbarProvider instance={rollbar}>
+    <RollbarProvider config={rollbarConfig}>
       <ErrorBoundary>
         <Provider store={store}>
           <BrowserRouter>
