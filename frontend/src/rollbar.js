@@ -2,11 +2,8 @@
 import Rollbar from 'rollbar';
 
 const rollbar = new Rollbar({
-  accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
-  environment:
-    process.env.REACT_APP_ROLLBAR_ENV === 'production'
-      ? 'production'
-      : 'development',
+  accessToken: 'b691f588a8d049359517ab005afc6f10',
+  environment: 'testenv',
   captureUncaught: true,
   captureUnhandledRejections: true,
 });
