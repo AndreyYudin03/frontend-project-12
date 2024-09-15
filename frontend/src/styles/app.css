@@ -31,5 +31,6 @@ main {
   overflow: hidden;
 }
 
-@import "./channelItem.css";
-@import "./messages.css";
+@import './channelItem.css';
+@import './messages.css';
+@import './inputField.css';
