@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
 // rollbar
-// import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
-// import rollbarConfig from './rollbar.js';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+import rollbarConfig from './rollbar.js';
 
 // store
 import store from './store/index.js';
@@ -20,14 +20,14 @@ import App from './App.js';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <RollbarProvider config={rollbarConfig}> */}
-    {/* <ErrorBoundary> */}
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-    {/* </ErrorBoundary> */}
-    {/* </RollbarProvider> */}
+    <RollbarProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </Provider>
+      </ErrorBoundary>
+    </RollbarProvider>
   </React.StrictMode>,
 );
