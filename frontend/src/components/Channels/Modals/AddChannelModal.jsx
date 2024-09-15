@@ -24,10 +24,14 @@ const AddChannelModal = ({
       <div className="mb-3">
         <Field
           type="text"
+          id="channelName"
           name="channelName"
           className="form-control"
           placeholder={t('chatPage.modal.addChannel.placeholder')}
         />
+        <label className="visually-hidden" htmlFor="channelName">
+          {t('chatPage.modal.addChannel.label')}
+        </label>
         <ErrorMessage
           name="channelName"
           component="div"

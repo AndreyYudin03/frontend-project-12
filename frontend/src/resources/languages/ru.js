@@ -50,6 +50,7 @@ const ru = {
           cancel: 'Отменить',
           submit: 'Добавить',
           placeholder: 'Введите название канала',
+          label: 'Имя канала',
           validation: {
             limit: 'От 3 до 20 символов',
           },

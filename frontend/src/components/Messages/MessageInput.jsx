@@ -20,14 +20,23 @@ const MessageInput = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   return (
     <form onSubmit={(e) => e.preventDefault()} className="d-flex">
       <input
         type="text"
+        aria-label="Новое сообщение"
         className="form-control me-2"
         placeholder={t('chatPage.messages.placeholder')}
         value={text}
         onChange={(e) => setText(e.target.value)}
+        onKeyDown={handleKeyDown}
         style={{ flexGrow: 1 }}
       />
       <button
