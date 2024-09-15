@@ -17,14 +17,8 @@ const SignUpForm = () => {
     dispatch(signup({ username, password }))
       .then((result) => {
         if (signup.fulfilled.match(result)) {
-          console.log('Signup succeeded, navigating...');
           navigate('/');
-        } else {
-          console.error('Signup failed:', result.payload);
         }
-      })
-      .catch((err) => {
-        console.error('Unexpected error during signup:', err);
       })
       .finally(() => {
         setSubmitting(false);

@@ -23,27 +23,12 @@ const LoginForm = () => {
       });
   };
 
-  const handleError = (loginError) => {
-    if (loginError) {
-      switch (loginError) {
-        case 401:
-          return t('loginPage.error.401');
-        case 'noCredentialsStorage':
-          return null;
-        default:
-          return t('loginPage.error.default');
-      }
-    }
-
-    return null;
-  };
-
   return (
     <AuthForm
       initialValues={{ username: '', password: '' }}
       onSubmit={handleSubmit}
       submitText={t('loginPage.submit')}
-      error={handleError(error)}
+      error={error && t('loginPage.error.default')}
     >
       <InputField label={t('loginPage.username')} name="username" type="text" />
       <InputField
