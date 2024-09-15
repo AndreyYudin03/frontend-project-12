@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { Provider, ErrorBoundary } from '@rollbar/react';
 
 import { ToastContainer } from 'react-toastify';
 import LoginPage from './pages/LoginPage.jsx';
@@ -14,23 +15,28 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import './styles/app.css';
 
+const rollbarConfig = {
+  accessToken: '1510989d7a1b46a0b7427ef53e6be816',
+  environment: 'testenv',
+};
+
 const App = () => (
-  <>
-    <ToastContainer />
-    <div className="d-flex flex-column vh-100">
-      <Header />
-      <main className="flex-grow-1 hv-100">
-        <BrowserRouter>
+  <Provider config={rollbarConfig}>
+    <ErrorBoundary>
+      <ToastContainer />
+      <div className="d-flex flex-column vh-100">
+        <Header />
+        <main className="flex-grow-1 hv-100">
           <Routes>
             <Route path="/" element={<ProtectedRoute element={ChatPage} />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
-      </main>
-    </div>
-  </>
+        </main>
+      </div>
+    </ErrorBoundary>
+  </Provider>
 );
 
 export default App;
