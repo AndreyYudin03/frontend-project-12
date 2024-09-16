@@ -132,8 +132,8 @@ const ChannelList = ({ channels }) => {
           type="button"
           aria-label="Add channel"
         >
-          <i className="bi bi-plus-square fs-4" />
           <span className="visually-hidden">+</span>
+          <i className="bi bi-plus-square fs-4" />
         </button>
       </div>
       <ul className="list-group mb-3">
