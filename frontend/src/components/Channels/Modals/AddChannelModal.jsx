@@ -22,6 +22,9 @@ const AddChannelModal = ({
       submitButtonText={t('chatPage.modal.addChannel.submit')}
     >
       <div className="mb-3">
+        <label className="visually-hidden" htmlFor="channelName">
+          {t('chatPage.modal.addChannel.label')}
+        </label>
         <Field
           type="text"
           id="channelName"
@@ -29,9 +32,7 @@ const AddChannelModal = ({
           className="form-control"
           placeholder={t('chatPage.modal.addChannel.placeholder')}
         />
-        <label className="visually-hidden" htmlFor="channelName">
-          {t('chatPage.modal.addChannel.label')}
-        </label>
+
         <ErrorMessage
           name="channelName"
           component="div"
