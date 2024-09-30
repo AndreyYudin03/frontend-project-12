@@ -45,7 +45,7 @@ const ChannelItem = ({
       >
         <button
           type="button"
-          className="w-100 rounded-0 text-start text-truncate btn"
+          className="w-100 rounded-0 text-start text-truncate btn btn-secondary"
           onClick={() => handleSetChannel(channel.id)}
           style={buttonStyle}
         >
