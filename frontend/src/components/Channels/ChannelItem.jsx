@@ -10,7 +10,7 @@ const ChannelItem = ({
   handleModalSwitch,
 }) => {
   const { t } = useTranslation();
-  const isActive = channel.id === channelId;
+  const isActive = channel.id === channelId; // проверка, активен ли канал
   const [isHovered, setIsHovered] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -20,11 +20,12 @@ const ChannelItem = ({
     backgroundColor: isActive ? '#e9ecef' : 'transparent',
   };
 
-  const buttonStyle = {
-    backgroundColor: 'transparent',
-    border: 'none',
-    color: isActive ? '#343a40' : 'inherit',
-  };
+  const buttonClass = classnames(
+    'w-100 rounded-0 text-start text-truncate btn',
+    {
+      'btn-secondary': isActive, // добавление класса 'btn-secondary', если канал активен
+    },
+  );
 
   const dropdownToggleStyle = {
     backgroundColor: isHovered ? '#f8f9fa' : 'transparent',
@@ -45,9 +46,8 @@ const ChannelItem = ({
       >
         <button
           type="button"
-          className="w-100 rounded-0 text-start text-truncate btn btn-secondary"
+          className={buttonClass} // применяем динамический класс
           onClick={() => handleSetChannel(channel.id)}
-          style={buttonStyle}
         >
           <span className="me-1">#</span>
           {' '}
