@@ -25,6 +25,9 @@ const RenameChannelModal = ({
       submitButtonText={t('chatPage.modal.renameChannel.submit')}
     >
       <div className="mb-3">
+        <label className="visually-hidden" htmlFor="newChannelName">
+          {t('chatPage.modal.renameChannel.label')}
+        </label>
         <Field
           type="text"
           name="newChannelName"
