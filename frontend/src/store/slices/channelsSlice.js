@@ -58,13 +58,14 @@ export const renameChannel = createAsyncThunk(
   async ({ channelId, name }, { dispatch, rejectWithValue }) => {
     try {
       const filteredName = cleanText(name);
-      const channel = { name: filteredName };
+      const editedChannel = { name: filteredName };
       const response = await axios.patch(
         `/api/v1/channels/${channelId}`,
-        channel,
+        editedChannel,
         getAuthHeaders(),
       );
       dispatch(editChannel(response.data));
+      console.log('response.data(renameChannel): ', response.data);
       return channelId;
     } catch (error) {
       rollbar.error('Failed to rename the channel', error);
@@ -109,6 +110,7 @@ const channelsSlice = createSlice({
       state.channelId = action.payload;
     },
     editChannel: (state, action) => {
+      console.log('action.payload(editChannel): ', action.payload);
       const { id, name } = action.payload;
       const index = state.channels.findIndex((channel) => channel.id === id);
       state.channels[index].name = name;

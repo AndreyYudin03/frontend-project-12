@@ -30,13 +30,13 @@ const RenameChannelModal = ({
         </label>
         <Field
           type="text"
-          id="renameChannel"
-          name="renameChannel"
+          id="newChannelName"
+          name="newChannelName"
           className="form-control"
           placeholder={t('chatPage.modal.renameChannel.placeholder')}
         />
         <ErrorMessage
-          name="renameChannel"
+          name="newChannelName"
           component="div"
           className="text-danger"
         />
