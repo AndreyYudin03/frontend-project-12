@@ -25,12 +25,20 @@ const SignUpForm = () => {
       });
   };
 
+  const handleSignUpError = (authError) => {
+    if (authError === 'UsernameAlreadyExists') {
+      return t('signUpPage.validation.userAlreadyExist');
+    }
+    return null;
+  };
+
   return (
     <AuthForm
       initialValues={{ username: '', password: '', confirmPassword: '' }}
       validationSchema={signUpValidationSchema(t)}
       onSubmit={handleSubmit}
       submitText={t('signUpPage.submit')}
+      error={handleSignUpError(error)}
     >
       <InputField
         label={t('signUpPage.username')}
@@ -47,11 +55,6 @@ const SignUpForm = () => {
         name="confirmPassword"
         type="password"
       />
-      {error && (
-        <div className="text-danger text-center mt-3">
-          {t('signUpPage.validation.userAlreadyExist')}
-        </div>
-      )}
     </AuthForm>
   );
 };

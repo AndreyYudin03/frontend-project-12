@@ -35,7 +35,7 @@ export const signup = createAsyncThunk(
       return token;
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        return rejectWithValue('Username already exists');
+        return rejectWithValue('UsernameAlreadyExists');
       }
       rollbar.error('User registration failed', error);
       return rejectWithValue(error.response?.data || 'Registration failed');
@@ -45,15 +45,14 @@ export const signup = createAsyncThunk(
 
 export const loadCredentialsFromStorage = createAsyncThunk(
   'auth/loadCredentialsFromStorage',
-  async (_, { dispatch, rejectWithValue }) => {
+  async (_, { dispatch }) => {
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('username');
-    if (!token || !username) {
-      return rejectWithValue('noCredentialsStorage');
+    if (token && username) {
+      handleAuthSuccess(token, username, dispatch);
+      return token;
     }
-    handleAuthSuccess(token, username, dispatch);
-
-    return token;
+    return null;
   },
 );
 

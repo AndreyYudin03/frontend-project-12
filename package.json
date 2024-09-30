@@ -4,10 +4,10 @@
   "description": "online chat",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build --prefix frontend",
     "start": "start-server -s ./frontend/build",
-    "postinstall": "cd frontend && npm ci"
+    "postinstall": "cd frontend && npm ci",
+    "test": "npx playwright test"
   },
   "author": "Andrey Yudin",
   "license": "ISC",

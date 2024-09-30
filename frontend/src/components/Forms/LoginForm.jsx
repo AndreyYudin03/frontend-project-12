@@ -23,11 +23,14 @@ const LoginForm = () => {
       });
   };
 
-  const handleError = (authError) => {
-    if (authError === 401) {
-      return t('loginPage.error.401');
+  const handleLoginError = (authError) => {
+    if (authError) {
+      if (authError === 401) {
+        return t('loginPage.error.401');
+      }
+      return t('loginPage.error.default');
     }
-    return t('loginPage.error.default');
+    return null;
   };
 
   return (
@@ -35,7 +38,7 @@ const LoginForm = () => {
       initialValues={{ username: '', password: '' }}
       onSubmit={handleSubmit}
       submitText={t('loginPage.submit')}
-      error={error && handleError(error)}
+      error={handleLoginError(error)}
     >
       <InputField label={t('loginPage.username')} name="username" type="text" />
       <InputField

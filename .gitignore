@@ -2,3 +2,9 @@
 
 /build
 /dist
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/e2e

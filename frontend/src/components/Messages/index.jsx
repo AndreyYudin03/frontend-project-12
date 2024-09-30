@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addMessage } from '../../store/slices/messagesSlice.js';
 
 // socket
-import socket from '../../socket.js';
+import socket from '../../socketClient.js';
 
 const Messages = ({ messages }) => {
   // hooks
