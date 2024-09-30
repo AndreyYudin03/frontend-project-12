@@ -27,7 +27,7 @@ const Header = () => {
         </Link>
         {token && isChatPage && (
           <button
-            className="btn btn-danger"
+            className="btn btn-primary"
             onClick={handleLogout}
             type="button"
           >
