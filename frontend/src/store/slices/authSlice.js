@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-try-statement */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
@@ -13,34 +12,32 @@ const handleAuthSuccess = (token, username, dispatch) => {
 
 export const login = createAsyncThunk(
   'auth/login',
-  async (credentials, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await axios.post('/api/v1/login', credentials);
+  async (credentials, { dispatch, rejectWithValue }) => axios
+    .post('/api/v1/login', credentials)
+    .then((response) => {
       const { token, username } = response.data;
       handleAuthSuccess(token, username, dispatch);
       return token;
-    } catch (error) {
-      return rejectWithValue(error.response.data.statusCode);
-    }
-  },
+    })
+    .catch((error) => rejectWithValue(error.response?.data?.statusCode || 'Login failed')),
 );
 
 export const signup = createAsyncThunk(
   'auth/signup',
-  async (credentials, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await axios.post('/api/v1/signup', credentials);
+  async (credentials, { dispatch, rejectWithValue }) => axios
+    .post('/api/v1/signup', credentials)
+    .then((response) => {
       const { token, username } = response.data;
       handleAuthSuccess(token, username, dispatch);
       return token;
-    } catch (error) {
+    })
+    .catch((error) => {
       if (error.response && error.response.status === 409) {
         return rejectWithValue('UsernameAlreadyExists');
       }
       rollbar.error('User registration failed', error);
       return rejectWithValue(error.response?.data || 'Registration failed');
-    }
-  },
+    }),
 );
 
 export const loadCredentialsFromStorage = createAsyncThunk(

@@ -1,12 +1,9 @@
-/* eslint-disable functional/no-try-statement */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import cleanText from './profanityFilter.js';
-
 import { removeAllMessagesByChannel } from './messagesSlice.js';
-
 import rollbar from '../../rollbar.js';
 
 const getAuthHeaders = () => {
@@ -20,73 +17,65 @@ const getAuthHeaders = () => {
 
 export const getChannels = createAsyncThunk(
   'channels/getChannels',
-  async (_, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await axios.get('/api/v1/channels', getAuthHeaders());
+  async (_, { dispatch, rejectWithValue }) => axios
+    .get('/api/v1/channels', getAuthHeaders())
+    .then((response) => {
       dispatch(setChannels(response.data));
       dispatch(setChannelId(response.data[0].id));
       return response.data;
-    } catch (error) {
+    })
+    .catch((error) => {
       rollbar.error('Failed to get channels', error);
       return rejectWithValue(error.response.data);
-    }
-  },
+    }),
 );
 
 export const newChannel = createAsyncThunk(
   'channels/newChannel',
   async ({ name }, { dispatch, rejectWithValue }) => {
-    try {
-      const filteredName = cleanText(name);
-      const channel = { name: filteredName };
-      const response = await axios.post(
-        '/api/v1/channels',
-        channel,
-        getAuthHeaders(),
-      );
-      dispatch(setChannelId(response.data.id));
-      return name;
-    } catch (error) {
-      rollbar.error('Failed creating a new channel', error);
-      return rejectWithValue(error.response.data);
-    }
+    const filteredName = cleanText(name);
+    const channel = { name: filteredName };
+    return axios
+      .post('/api/v1/channels', channel, getAuthHeaders())
+      .then((response) => {
+        dispatch(setChannelId(response.data.id));
+        return name;
+      })
+      .catch((error) => {
+        rollbar.error('Failed creating a new channel', error);
+        return rejectWithValue(error.response.data);
+      });
   },
 );
 
 export const renameChannel = createAsyncThunk(
   'channels/renameChannel',
   async ({ channelId, name }, { dispatch, rejectWithValue }) => {
-    try {
-      const filteredName = cleanText(name);
-      const editedChannel = { name: filteredName };
-      const response = await axios.patch(
-        `/api/v1/channels/${channelId}`,
-        editedChannel,
-        getAuthHeaders(),
-      );
-      dispatch(editChannel(response.data));
-      console.log('response.data(renameChannel): ', response.data);
-      return channelId;
-    } catch (error) {
-      rollbar.error('Failed to rename the channel', error);
-      return rejectWithValue(error.response.data);
-    }
+    const filteredName = cleanText(name);
+    const editedChannel = { name: filteredName };
+    return axios
+      .patch(`/api/v1/channels/${channelId}`, editedChannel, getAuthHeaders())
+      .then((response) => {
+        dispatch(editChannel(response.data));
+        console.log('response.data(renameChannel): ', response.data);
+      })
+      .catch((error) => {
+        rollbar.error('Failed to rename the channel', error);
+        return rejectWithValue(error.response.data);
+      });
   },
 );
 
 export const removeChannel = createAsyncThunk(
   'channels/removeChannel',
-  async ({ channelId }, { dispatch, rejectWithValue }) => {
-    try {
-      await axios.delete(`/api/v1/channels/${channelId}`, getAuthHeaders());
-
-      await dispatch(removeAllMessagesByChannel({ channelId }));
-      return { channelId };
-    } catch (error) {
+  async ({ channelId }, { dispatch, rejectWithValue }) => axios
+    .delete(`/api/v1/channels/${channelId}`, getAuthHeaders())
+    .then(() => dispatch(removeAllMessagesByChannel({ channelId })))
+    .then(() => ({ channelId }))
+    .catch((error) => {
       rollbar.error('Failed to delete the channel', error);
       return rejectWithValue(error.response.data);
-    }
-  },
+    }),
 );
 
 const initialState = {
