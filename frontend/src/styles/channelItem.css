@@ -30,3 +30,7 @@
 .dropdown-menu.show {
   animation: fadeInFromTopRight 0.3s forwards;
 }
+
+.btn {
+  color: white;
+}

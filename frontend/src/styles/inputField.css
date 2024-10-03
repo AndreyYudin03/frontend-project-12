@@ -1,5 +1,6 @@
 .input-field-wrapper {
   margin-bottom: 15px;
+  max-width: 100%;
 }
 
 .input-field-container {
