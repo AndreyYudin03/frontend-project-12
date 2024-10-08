@@ -7,10 +7,13 @@ import AuthForm from './AuthForm.jsx';
 import InputField from '../InputField.jsx';
 import { signUpValidationSchema } from '../../validations/index.js';
 
+// selectors
+import { getAuthError } from '../../store/slices/authSelectors.js';
+
 const SignUpForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { error } = useSelector((state) => state.auth);
+  const error = useSelector(getAuthError);
   const { t } = useTranslation();
 
   const handleSubmit = ({ username, password }, { setSubmitting }) => {

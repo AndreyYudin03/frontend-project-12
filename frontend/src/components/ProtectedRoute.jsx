@@ -3,9 +3,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { loadCredentialsFromStorage } from '../store/slices/authSlice.js';
 
+// selectors
+import {
+  getToken,
+  getUsername,
+  getAuthLoading,
+} from '../store/slices/authSelectors.js';
+
 const ProtectedRoute = ({ element: Page }) => {
   const dispatch = useDispatch();
-  const { token, username, isLoading } = useSelector((state) => state.auth);
+  const token = useSelector(getToken);
+  const username = useSelector(getUsername);
+  const isLoading = useSelector(getAuthLoading);
 
   useEffect(() => {
     if (!token || !username) {

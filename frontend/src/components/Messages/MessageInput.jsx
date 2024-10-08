@@ -2,20 +2,25 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import leoProfanity from 'leo-profanity';
 import { sendMessage } from '../../store/slices/messagesSlice.js';
 
-const MessageInput = () => {
-  leoProfanity.add(leoProfanity.getDictionary('ru'));
+// profanityFilter
+import profanityFilter from '../../utils/profanityFilter';
 
+// selectors
+import { getCurrentChannelId } from '../../store/slices/channelsSelectors.js';
+
+const MessageInput = () => {
   const [text, setText] = useState('');
-  const { channelId } = useSelector((state) => state.channels);
+  const channelId = useSelector(getCurrentChannelId);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   const handleSendMessage = () => {
     if (text.trim() !== '') {
-      dispatch(sendMessage({ channelId, text }));
+      const filteredMessage = profanityFilter(text);
+      console.log('filteredMessage: ', text);
+      dispatch(sendMessage({ channelId, text: filteredMessage }));
       setText('');
     }
   };

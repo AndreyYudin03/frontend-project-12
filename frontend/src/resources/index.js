@@ -7,13 +7,15 @@ const resources = {
   ru,
 };
 
-i18n.use(initReactI18next).init({
-  resources,
-  lng: 'ru',
-  fallbackLng: 'ru',
-  interpolation: {
-    escapeValue: false,
-  },
-});
+const initializeI18n = () => {
+  i18n.use(initReactI18next).init({
+    resources,
+    lng: 'ru',
+    fallbackLng: 'ru',
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+};
 
-export default i18n;
+export default initializeI18n;

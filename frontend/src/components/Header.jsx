@@ -4,13 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { logout } from '../store/slices/authSlice';
 
+// selectors
+import { getToken } from '../store/slices/authSelectors.js';
+
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const token = useSelector((state) => state.auth);
+  const token = useSelector(getToken);
 
   const handleLogout = () => {
     dispatch(logout());

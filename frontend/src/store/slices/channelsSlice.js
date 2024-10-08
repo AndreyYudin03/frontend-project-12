@@ -2,7 +2,6 @@
 /* eslint-disable no-use-before-define */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import cleanText from './profanityFilter.js';
 import { removeAllMessagesByChannel } from './messagesSlice.js';
 import rollbar from '../../rollbar.js';
 
@@ -33,8 +32,7 @@ export const getChannels = createAsyncThunk(
 export const newChannel = createAsyncThunk(
   'channels/newChannel',
   async ({ name }, { dispatch, rejectWithValue }) => {
-    const filteredName = cleanText(name);
-    const channel = { name: filteredName };
+    const channel = { name };
     return axios
       .post('/api/v1/channels', channel, getAuthHeaders())
       .then((response) => {
@@ -51,8 +49,7 @@ export const newChannel = createAsyncThunk(
 export const renameChannel = createAsyncThunk(
   'channels/renameChannel',
   async ({ channelId, name }, { dispatch, rejectWithValue }) => {
-    const filteredName = cleanText(name);
-    const editedChannel = { name: filteredName };
+    const editedChannel = { name };
     return axios
       .patch(`/api/v1/channels/${channelId}`, editedChannel, getAuthHeaders())
       .then((response) => {

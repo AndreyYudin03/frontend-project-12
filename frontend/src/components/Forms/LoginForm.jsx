@@ -6,11 +6,14 @@ import { login } from '../../store/slices/authSlice.js';
 import AuthForm from './AuthForm.jsx';
 import InputField from '../InputField.jsx';
 
+// selectors
+import { getAuthError } from '../../store/slices/authSelectors.js';
+
 const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { error } = useSelector((state) => state.auth);
+  const error = useSelector(getAuthError);
 
   const handleSubmit = (values, { setSubmitting }) => {
     dispatch(login(values))

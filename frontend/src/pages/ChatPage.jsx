@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import Notify from '../components/Notify';
 
 // actions
-import { getChannels } from '../store/slices/channelsSlice.js';
-import { getMessages } from '../store/slices/messagesSlice.js';
+import { getChannels as fetchChannels } from '../store/slices/channelsSlice.js';
+import { getMessages as fetchMessages } from '../store/slices/messagesSlice.js';
 
 // components
 import Channels from '../components/Channels';
@@ -16,6 +16,19 @@ import MessageInput from '../components/Messages/MessageInput.jsx';
 // socket
 import useSetupSocket from '../hooks/useSocketSetup.jsx';
 
+// selectors
+import {
+  getChannels,
+  getChannelsLoading,
+  getChannelsError,
+} from '../store/slices/channelsSelectors.js';
+
+import {
+  getMessages,
+  getMessagesLoading,
+  getMessagesError,
+} from '../store/slices/messagesSelectors.js';
+
 const ChatPage = () => {
   // hooks
   const dispatch = useDispatch();
@@ -24,24 +37,21 @@ const ChatPage = () => {
   const { t } = useTranslation();
 
   // selectors
-  const {
-    channels,
-    isLoading: channelsLoading,
-    error: channelsError,
-  } = useSelector((state) => state.channels);
-  const {
-    messages,
-    isLoading: messagesLoading,
-    error: messagesError,
-  } = useSelector((state) => state.messages);
+  const channels = useSelector(getChannels);
+  const channelsLoading = useSelector(getChannelsLoading);
+  const channelsError = useSelector(getChannelsError);
+
+  const messages = useSelector(getMessages);
+  const messagesLoading = useSelector(getMessagesLoading);
+  const messagesError = useSelector(getMessagesError);
 
   // start socket
   useSetupSocket();
 
   // load channels and messages
   useEffect(() => {
-    dispatch(getChannels());
-    dispatch(getMessages());
+    dispatch(fetchChannels());
+    dispatch(fetchMessages());
   }, [dispatch]);
 
   // loading spinner

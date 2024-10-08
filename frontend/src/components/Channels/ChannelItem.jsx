@@ -23,7 +23,7 @@ const ChannelItem = ({
   const buttonClass = classnames(
     'w-100 rounded-0 text-start text-truncate btn',
     {
-      'btn-secondary': isActive, // добавление класса 'btn-secondary', если канал активен
+      'btn-secondary': isActive,
     },
   );
 

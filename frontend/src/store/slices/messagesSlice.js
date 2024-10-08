@@ -2,7 +2,6 @@
 /* eslint-disable no-use-before-define */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import cleanText from './profanityFilter.js';
 import rollbar from '../../rollbar.js';
 
 const getAuthHeaders = () => {
@@ -32,8 +31,7 @@ export const sendMessage = createAsyncThunk(
   'messages/sendMessage',
   async ({ text, channelId }, { rejectWithValue }) => {
     const username = localStorage.getItem('username');
-    const filteredMessage = cleanText(text);
-    const newMessage = { body: filteredMessage, channelId, username };
+    const newMessage = { body: text, channelId, username };
     return axios
       .post('/api/v1/messages', newMessage, getAuthHeaders())
       .then(() => channelId)
