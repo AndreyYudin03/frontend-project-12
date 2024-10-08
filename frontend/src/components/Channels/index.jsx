@@ -53,7 +53,7 @@ const ChannelList = ({ channels }) => {
   };
 
   const handleRenameChannel = (values, { setSubmitting }) => {
-    const filteredName = profanityFilter(values.channelName);
+    const filteredName = profanityFilter(values.newChannelName);
     dispatch(
       renameChannel({
         channelId: selectedChannel.id,
