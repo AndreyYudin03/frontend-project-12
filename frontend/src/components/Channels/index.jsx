@@ -1,6 +1,10 @@
+// react
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+
+// profanityFilter
+import profanityFilter from '../../utils/profanityFilter';
 
 // actions
 import {
@@ -40,7 +44,8 @@ const ChannelList = ({ channels }) => {
   };
 
   const handleAddChannel = (values, { setSubmitting }) => {
-    dispatch(newChannel({ name: values.channelName }))
+    const filteredName = profanityFilter(values.channelName);
+    dispatch(newChannel({ name: filteredName }))
       .then(() => Notify(t('chatPage.notifications.addChannel'), 'success'))
       .catch(() => Notify(t('chatPage.notifications.addChannelError'), 'error'));
     setSubmitting(false);
@@ -48,10 +53,11 @@ const ChannelList = ({ channels }) => {
   };
 
   const handleRenameChannel = (values, { setSubmitting }) => {
+    const filteredName = profanityFilter(values.channelName);
     dispatch(
       renameChannel({
         channelId: selectedChannel.id,
-        name: values.newChannelName,
+        name: filteredName,
       }),
     )
       .then(() => Notify(t('chatPage.notifications.renameChannel'), 'success'))
