@@ -12,15 +12,21 @@ import NotFound from './pages/NotFoundPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Header from './components/Header.jsx';
 
+// routes
+import routes from './routes';
+
 const App = () => (
   <div className="d-flex flex-column vh-100">
     <Header />
     <main className="flex-grow-1 hv-100">
       <Routes>
-        <Route path="/" element={<ProtectedRoute element={ChatPage} />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="*" element={<NotFound />} />
+        <Route
+          path={routes.main}
+          element={<ProtectedRoute element={ChatPage} />}
+        />
+        <Route path={routes.login} element={<LoginPage />} />
+        <Route path={routes.register} element={<SignUpPage />} />
+        <Route path={routes.notFound} element={<NotFound />} />
       </Routes>
     </main>
   </div>
