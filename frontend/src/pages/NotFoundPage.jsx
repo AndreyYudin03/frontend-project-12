@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import routes from '../routes';
+
 const NotFound = () => {
   const { t } = useTranslation();
 
@@ -10,7 +12,7 @@ const NotFound = () => {
       <h6>
         {t('notFoundPage.text')}
         {' '}
-        <Link to="/">
+        <Link to={routes.main}>
           {' '}
           {t('notFoundPage.text_chatLink')}
         </Link>

@@ -1,8 +1,9 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import rollbar from '../../rollbar.js';
+
+import api from '../../api';
 
 const handleAuthSuccess = (token, username, dispatch) => {
   localStorage.setItem('token', token);
@@ -12,8 +13,8 @@ const handleAuthSuccess = (token, username, dispatch) => {
 
 export const login = createAsyncThunk(
   'auth/login',
-  async (credentials, { dispatch, rejectWithValue }) => axios
-    .post('/api/v1/login', credentials)
+  async (credentials, { dispatch, rejectWithValue }) => api
+    .post('/login', credentials)
     .then((response) => {
       const { token, username } = response.data;
       handleAuthSuccess(token, username, dispatch);
@@ -24,8 +25,8 @@ export const login = createAsyncThunk(
 
 export const signup = createAsyncThunk(
   'auth/signup',
-  async (credentials, { dispatch, rejectWithValue }) => axios
-    .post('/api/v1/signup', credentials)
+  async (credentials, { dispatch, rejectWithValue }) => api
+    .post('/signup', credentials)
     .then((response) => {
       const { token, username } = response.data;
       handleAuthSuccess(token, username, dispatch);

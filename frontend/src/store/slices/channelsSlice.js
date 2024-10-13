@@ -1,9 +1,10 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { removeAllMessagesByChannel } from './messagesSlice.js';
 import rollbar from '../../rollbar.js';
+
+import api from '../../api';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
@@ -16,8 +17,8 @@ const getAuthHeaders = () => {
 
 export const getChannels = createAsyncThunk(
   'channels/getChannels',
-  async (_, { dispatch, rejectWithValue }) => axios
-    .get('/api/v1/channels', getAuthHeaders())
+  async (_, { dispatch, rejectWithValue }) => api
+    .get('/channels', getAuthHeaders())
     .then((response) => {
       dispatch(setChannels(response.data));
       dispatch(setChannelId(response.data[0].id));
@@ -33,8 +34,8 @@ export const newChannel = createAsyncThunk(
   'channels/newChannel',
   async ({ name }, { dispatch, rejectWithValue }) => {
     const channel = { name };
-    return axios
-      .post('/api/v1/channels', channel, getAuthHeaders())
+    return api
+      .post('/channels', channel, getAuthHeaders())
       .then((response) => {
         dispatch(setChannelId(response.data.id));
         return name;
@@ -50,8 +51,8 @@ export const renameChannel = createAsyncThunk(
   'channels/renameChannel',
   async ({ channelId, name }, { dispatch, rejectWithValue }) => {
     const editedChannel = { name };
-    return axios
-      .patch(`/api/v1/channels/${channelId}`, editedChannel, getAuthHeaders())
+    return api
+      .patch(`/channels/${channelId}`, editedChannel, getAuthHeaders())
       .then((response) => {
         dispatch(editChannel(response.data));
         console.log('response.data(renameChannel): ', response.data);
@@ -65,8 +66,8 @@ export const renameChannel = createAsyncThunk(
 
 export const removeChannel = createAsyncThunk(
   'channels/removeChannel',
-  async ({ channelId }, { dispatch, rejectWithValue }) => axios
-    .delete(`/api/v1/channels/${channelId}`, getAuthHeaders())
+  async ({ channelId }, { dispatch, rejectWithValue }) => api
+    .delete(`/channels/${channelId}`, getAuthHeaders())
     .then(() => dispatch(removeAllMessagesByChannel({ channelId })))
     .then(() => ({ channelId }))
     .catch((error) => {

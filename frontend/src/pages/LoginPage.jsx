@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LoginForm from '../components/Forms/LoginForm';
 
+import routes from '../routes';
+
 const LoginPage = () => {
   const { t } = useTranslation();
 
@@ -16,7 +18,7 @@ const LoginPage = () => {
             <p>
               {t('loginPage.noAccount')}
               {' '}
-              <Link to="/signup">{t('loginPage.signUp')}</Link>
+              <Link to={routes.register}>{t('loginPage.signUp')}</Link>
             </p>
           </div>
         </div>

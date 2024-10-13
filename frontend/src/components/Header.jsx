@@ -7,6 +7,8 @@ import { logout } from '../store/slices/authSlice';
 // selectors
 import { getToken } from '../store/slices/authSelectors.js';
 
+import routes from '../routes';
+
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login');
+    navigate(routes.login);
   };
 
   const isChatPage = location.pathname === '/';

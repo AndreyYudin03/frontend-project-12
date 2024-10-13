@@ -1,8 +1,9 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import rollbar from '../../rollbar.js';
+
+import api from '../../api';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
@@ -15,8 +16,8 @@ const getAuthHeaders = () => {
 
 export const getMessages = createAsyncThunk(
   'messages/getMessages',
-  async (_, { dispatch, rejectWithValue }) => axios
-    .get('/api/v1/messages', getAuthHeaders())
+  async (_, { dispatch, rejectWithValue }) => api
+    .get('/messages', getAuthHeaders())
     .then((response) => {
       dispatch(setMessages(response.data));
       return null;
@@ -32,8 +33,8 @@ export const sendMessage = createAsyncThunk(
   async ({ text, channelId }, { rejectWithValue }) => {
     const username = localStorage.getItem('username');
     const newMessage = { body: text, channelId, username };
-    return axios
-      .post('/api/v1/messages', newMessage, getAuthHeaders())
+    return api
+      .post('/messages', newMessage, getAuthHeaders())
       .then(() => channelId)
       .catch((error) => {
         rollbar.error('Failed to send message', error);
@@ -44,8 +45,8 @@ export const sendMessage = createAsyncThunk(
 
 export const removeMessage = createAsyncThunk(
   'messages/removeMessage',
-  async ({ messageId }, { dispatch, rejectWithValue }) => axios
-    .delete(`/api/v1/messages/${messageId}`, getAuthHeaders())
+  async ({ messageId }, { dispatch, rejectWithValue }) => api
+    .delete(`/messages/${messageId}`, getAuthHeaders())
     .then(() => {
       dispatch(deleteMessage({ id: messageId }));
       return messageId;
@@ -58,14 +59,14 @@ export const removeMessage = createAsyncThunk(
 
 export const removeAllMessagesByChannel = createAsyncThunk(
   'messages/removeAllMessagesByChannel',
-  async ({ channelId }, { dispatch, rejectWithValue }) => axios
-    .get('/api/v1/messages', getAuthHeaders())
+  async ({ channelId }, { dispatch, rejectWithValue }) => api
+    .get('/messages', getAuthHeaders())
     .then((response) => {
       const messagesByChannel = response.data.filter(
         (message) => message.channelId === channelId,
       );
 
-      const deletePromises = messagesByChannel.map(({ id }) => axios.delete(`/api/v1/messages/${id}`, getAuthHeaders()));
+      const deletePromises = messagesByChannel.map(({ id }) => api.delete(`/messages/${id}`, getAuthHeaders()));
 
       return Promise.all(deletePromises);
     })

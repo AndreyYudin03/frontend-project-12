@@ -9,6 +9,8 @@ import InputField from '../InputField.jsx';
 // selectors
 import { getAuthError } from '../../store/slices/authSelectors.js';
 
+import routes from '../../routes';
+
 const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -19,7 +21,7 @@ const LoginForm = () => {
     dispatch(login(values))
       .unwrap()
       .then(() => {
-        navigate('/');
+        navigate(routes.main);
       })
       .catch(() => {
         setSubmitting(false);

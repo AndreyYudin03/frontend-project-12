@@ -10,6 +10,8 @@ import { signUpValidationSchema } from '../../validations/index.js';
 // selectors
 import { getAuthError } from '../../store/slices/authSelectors.js';
 
+import routes from '../../routes';
+
 const SignUpForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,7 +22,7 @@ const SignUpForm = () => {
     dispatch(signup({ username, password }))
       .then((result) => {
         if (signup.fulfilled.match(result)) {
-          navigate('/');
+          navigate(routes.main);
         }
       })
       .finally(() => {

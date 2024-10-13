@@ -10,6 +10,8 @@ import {
   getAuthLoading,
 } from '../store/slices/authSelectors.js';
 
+import routes from '../routes';
+
 const ProtectedRoute = ({ element: Page }) => {
   const dispatch = useDispatch();
   const token = useSelector(getToken);
@@ -30,7 +32,7 @@ const ProtectedRoute = ({ element: Page }) => {
     );
   }
 
-  return token && username ? <Page /> : <Navigate to="/login" />;
+  return token && username ? <Page /> : <Navigate to={routes.login} />;
 };
 
 export default ProtectedRoute;
