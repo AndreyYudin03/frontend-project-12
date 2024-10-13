@@ -13,7 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Header from './components/Header.jsx';
 
 // routes
-import routes from './routes';
+import routes from './routes/index.js';
 
 const App = () => (
   <div className="d-flex flex-column vh-100">
