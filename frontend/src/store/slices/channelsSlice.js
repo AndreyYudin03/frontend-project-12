@@ -4,7 +4,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { removeAllMessagesByChannel } from './messagesSlice.js';
 import rollbar from '../../rollbar.js';
 
-import api from '../../api';
+import api from '../../api/index.js';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
